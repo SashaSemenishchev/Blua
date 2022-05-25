@@ -1,0 +1,4 @@
+name: Blua
+version: '${project.version}'
+main: me.mrfunny.blua.Blua
+api-version: 1.16
