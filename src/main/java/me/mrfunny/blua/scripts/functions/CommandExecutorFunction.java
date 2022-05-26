@@ -15,51 +15,50 @@ import java.util.stream.Collectors;
 public class CommandExecutorFunction extends VarArgFunction {
 
     @Override
-    public Varargs invoke(LuaValue[] values) {
-        String name = values[0].checkstring().toString();;
+    public Varargs onInvoke(Varargs args) {
+        String name = args.arg(1).checkstring().toString();;
         List<String> aliases;
         String permission;
         String description;
         String usage;
         LuaFunction executable;
-        if (values.length == 2) {
+        if (args.narg() == 2) {
             aliases = new ArrayList<>();
             permission = "*";
             description = "A blua command: " + name;
             usage = "/" + name;
-            executable = values[1].checkfunction();
-        } else if(values.length == 3) {
-            if(values[1].isstring()) {
-                description = values[1].checkstring().toString();
+            executable = args.arg(2).checkfunction();
+        } else if(args.narg() == 3) {
+            if(args.arg(1).isstring()) {
+                description = args.arg(2).checkstring().toString();
                 aliases = new ArrayList<>();
             } else {
-                aliases = Arrays.stream(values[1].checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
+                aliases = Arrays.stream(args.arg(2).checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
                 description = "A blua command: " + name;
             }
             permission = "*";
             usage = "/" + name;
-            executable = values[2].checkfunction();
-        } else if(values.length == 4) {
-            aliases = Arrays.stream(values[1].checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
-            description = values[2].checkstring().toString();
-            executable = values[3].checkfunction();
+            executable = args.arg(3).checkfunction();
+        } else if(args.narg() == 4) {
+            aliases = Arrays.stream(args.arg(2).checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
+            description = args.arg(3).checkstring().toString();
+            executable = args.arg(4).checkfunction();
             permission = "*";
             usage = "/" + name;
-        } else if(values.length == 5) {
-            aliases = Arrays.stream(values[1].checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
-            description = values[2].checkstring().toString();
-            usage = values[3].checkstring().toString();
-            executable = values[4].checkfunction();
+        } else if(args.narg() == 5) {
+            aliases = Arrays.stream(args.arg(2).checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
+            description = args.arg(3).checkstring().toString();
+            usage = args.arg(4).checkstring().toString();
+            executable = args.arg(5).checkfunction();
             permission = "*";
         } else {
-            aliases = Arrays.stream(values[1].checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
-            description = values[2].checkstring().toString();
-            usage = values[3].checkstring().toString();
-            permission = values[4].checkstring().toString();
-            executable = values[5].checkfunction();
+            aliases = Arrays.stream(args.arg(2).checktable().keys()).map(LuaValue::toString).collect(Collectors.toList());
+            description = args.arg(3).checkstring().toString();
+            usage = args.arg(4).checkstring().toString();
+            permission = args.arg(5).checkstring().toString();
+            executable = args.arg(6).checkfunction();
         }
-        new BluaCommand(name, description, usage, permission, aliases, executable);
-
+        new BluaCommand(permission, name, description, usage, aliases, executable);
         return LuaValue.NIL;
     }
 

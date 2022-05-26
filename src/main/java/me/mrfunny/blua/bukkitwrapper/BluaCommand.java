@@ -31,10 +31,15 @@ public class BluaCommand extends BukkitCommand {
             Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             f.setAccessible(true);
             CommandMap commandMap = (CommandMap) f.get(Bukkit.getServer());
-            commandMap.register(name, this);
+            if(commandMap.register("/", this)) {
+                System.out.println("Registered command " + name);
+            } else {
+                System.out.println("Failed to register command " + name);
+            }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override

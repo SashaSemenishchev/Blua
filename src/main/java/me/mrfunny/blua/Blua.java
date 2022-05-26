@@ -1,6 +1,7 @@
 package me.mrfunny.blua;
 
 import me.mrfunny.blua.bukkitwrapper.BluaRegisteredListener;
+import me.mrfunny.blua.bukkitwrapper.ChatColor;
 import me.mrfunny.blua.commands.ReloadScriptsCommand;
 import me.mrfunny.blua.scripts.DummyListener;
 import me.mrfunny.blua.scripts.Script;
@@ -8,9 +9,12 @@ import me.mrfunny.blua.scripts.functions.CommandExecutorFunction;
 import me.mrfunny.blua.scripts.functions.EventHandlerFunction;
 import me.mrfunny.blua.scripts.functions.IsEntityFunction;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.WorldCreator;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaFunction;
@@ -69,12 +73,15 @@ public final class Blua extends JavaPlugin  {
         globals.set("EventHandler", new EventHandlerFunction());
         globals.set("CommandExecutor", new CommandExecutorFunction());
         globals.set("Bukkit", CoerceJavaToLua.coerce(Bukkit.class));
+        globals.set("Material", CoerceJavaToLua.coerce(Material.class));
         globals.set("plugin", CoerceJavaToLua.coerce(this));
+        globals.set("ItemStack", CoerceJavaToLua.coerce(ItemStack.class));
+        globals.set("WorldCreator", CoerceJavaToLua.coerce(WorldCreator.class));
+        globals.set("ChatColor", CoerceJavaToLua.coerce(ChatColor.class));
         globals.set("is_entity", new IsEntityFunction());
         File scripts = new File(Bukkit.getWorldContainer(), "scripts");
         if (!scripts.exists()) scripts.mkdirs();
         Reflections reflections = new Reflections("org.bukkit.event");
-
         bukkitEvents = reflections.get(Scanners.SubTypes.of(Event.class).asClass());
         for(File file : scripts.listFiles()) {
             Script script = new Script(globals, file);
