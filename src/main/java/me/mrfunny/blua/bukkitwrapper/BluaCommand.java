@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Player;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -38,7 +39,13 @@ public class BluaCommand extends BukkitCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        LuaValue result = callable.call(CoerceJavaToLua.coerce(sender), CoerceJavaToLua.coerce(args));
+        String executorType;
+        if(sender instanceof Player) {
+            executorType = "Player";
+        } else {
+            executorType = "Console";
+        }
+        LuaValue result = callable.call(CoerceJavaToLua.coerce(sender), LuaValue.valueOf(executorType), CoerceJavaToLua.coerce(args));
         if(result.isboolean()) {
             return result.toboolean();
         }
