@@ -1,4 +1,4 @@
-package me.mrfunny.blua;
+package me.mrfunny.blua.bukkitwrapper;
 
 import org.bukkit.event.*;
 import org.bukkit.plugin.Plugin;

@@ -1,14 +1,9 @@
 package me.mrfunny.blua.scripts.functions;
 
 import me.mrfunny.blua.Blua;
-import me.mrfunny.blua.BluaRegisteredListener;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.luaj.vm2.*;
-import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
-import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class EventHandlerFunction extends FourArgsFunction {
 

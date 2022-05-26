@@ -1,7 +1,9 @@
 package me.mrfunny.blua;
 
+import me.mrfunny.blua.bukkitwrapper.BluaRegisteredListener;
 import me.mrfunny.blua.scripts.DummyListener;
 import me.mrfunny.blua.scripts.Script;
+import me.mrfunny.blua.scripts.functions.CommandExecutorFunction;
 import me.mrfunny.blua.scripts.functions.EventHandlerFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -10,14 +12,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaFunction;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +63,9 @@ public final class Blua extends JavaPlugin  {
 
     private void loadScripts() {
         Globals globals = JsePlatform.standardGlobals();
-        globals.load(new EventHandlerFunction());
+        globals.set("EventHandler", new EventHandlerFunction());
+        globals.set("CommandExecutor", new CommandExecutorFunction());
+        globals.set("Bukkit", CoerceJavaToLua.coerce(Bukkit.class));
         File scripts = new File(Bukkit.getWorldContainer(), "scripts");
         if (!scripts.exists()) scripts.mkdirs();
         Reflections reflections = new Reflections("org.bukkit.event");
