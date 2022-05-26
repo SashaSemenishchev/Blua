@@ -77,5 +77,9 @@ public final class Blua extends JavaPlugin  {
             Script script = new Script(globals, file);
             runningScripts.add(script);
         }
+
+        for(Script script : runningScripts) {
+            script.run();
+        }
     }
 }
