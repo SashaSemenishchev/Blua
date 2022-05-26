@@ -6,6 +6,7 @@ import me.mrfunny.blua.scripts.DummyListener;
 import me.mrfunny.blua.scripts.Script;
 import me.mrfunny.blua.scripts.functions.CommandExecutorFunction;
 import me.mrfunny.blua.scripts.functions.EventHandlerFunction;
+import me.mrfunny.blua.scripts.functions.IsEntityFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -68,6 +69,8 @@ public final class Blua extends JavaPlugin  {
         globals.set("EventHandler", new EventHandlerFunction());
         globals.set("CommandExecutor", new CommandExecutorFunction());
         globals.set("Bukkit", CoerceJavaToLua.coerce(Bukkit.class));
+        globals.set("plugin", CoerceJavaToLua.coerce(this));
+        globals.set("is_entity", new IsEntityFunction());
         File scripts = new File(Bukkit.getWorldContainer(), "scripts");
         if (!scripts.exists()) scripts.mkdirs();
         Reflections reflections = new Reflections("org.bukkit.event");
