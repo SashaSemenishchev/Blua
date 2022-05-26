@@ -1,6 +1,7 @@
 package me.mrfunny.blua;
 
 import me.mrfunny.blua.bukkitwrapper.BluaRegisteredListener;
+import me.mrfunny.blua.commands.ReloadScriptsCommand;
 import me.mrfunny.blua.scripts.DummyListener;
 import me.mrfunny.blua.scripts.Script;
 import me.mrfunny.blua.scripts.functions.CommandExecutorFunction;
@@ -32,6 +33,7 @@ public final class Blua extends JavaPlugin  {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
+        getCommand("reloadscripts").setExecutor(new ReloadScriptsCommand());
         loadScripts();
     }
 
